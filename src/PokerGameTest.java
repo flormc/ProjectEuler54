@@ -11,13 +11,13 @@ public class PokerGameTest {
         Player player2 = createPlayer("Player 2", new String[]{"2C", "3S", "8S", "8D", "TD"}, 0, 4);
         PokerGame.evaluateAndPrintWinner(player1, player2);
     }
-
+    @Test
     public void testEvaluateAndPrintWinner_OnePair() {
         Player player1 = createPlayer("Player 1", new String[]{"2H", "2S", "6D", "8C", "AH"}, 0, 4);
         Player player2 = createPlayer("Player 2", new String[]{"3H", "3S", "7D", "9C", "KH"}, 0, 4);
         PokerGame.evaluateAndPrintWinner(player1, player2);
     }
-
+    @Test
     public void testEvaluateAndPrintWinner_TwoPairs() {
         Player player1 = createPlayer("Player 1", new String[]{"2H", "2S", "4D", "4C", "AH"}, 0, 4);
         Player player2 = createPlayer("Player 2", new String[]{"3H", "3S", "5D", "5C", "KH"}, 0, 4);
