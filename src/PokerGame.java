@@ -32,7 +32,7 @@ public class PokerGame{
             return new Player(name, hand);
     }
 
-    private static Card parseCardFromString(String cardString){
+    public static Card parseCardFromString(String cardString){
         String rankString = cardString.substring(0, cardString.length() - 1);
         char suitChar = cardString.charAt(cardString.length() - 1);
         String suitString = String.valueOf(suitChar);
@@ -76,7 +76,7 @@ public class PokerGame{
         return new Card(rank, suit);
     }
 
-    private static void evaluateAndPrintWinner(Player player1, Player player2){
+    static void evaluateAndPrintWinner(Player player1, Player player2){
         Hand hand1 = player1.getHand();
         Hand hand2 = player2.getHand();
         int result = hand1.compareTo(hand2);
@@ -84,7 +84,7 @@ public class PokerGame{
         if (result > 0){
             System.out.println(player1.getName() + "wins!");
         } else if (result < 0){
-            System.out.println(player2.getName() + "wins");
+            System.out.println(player2.getName() + "wins!");
         } else {
             System.out.println("It's a tie!");
         }
