@@ -11,19 +11,18 @@ public class PokerFileReader {
         this.filePath = filePath;
     }
 
-    public List<String> readLines(){
+    public List<String> readLines() throws IOException {
         List<String> lines = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 lines.add(line);
             }
-        }catch (IOException e){
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new IOException("Error reading file: " + e.getMessage(), e);
         }
         return lines;
-
     }
 
 }

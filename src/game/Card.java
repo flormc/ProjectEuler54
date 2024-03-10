@@ -1,9 +1,18 @@
 package game;
 
-public class Card {
+public class Card implements Comparable<Card>{
     public Card(Rank rank, Suit suit) {
         this.rank = rank;
         this.suit = suit;
+    }
+    @Override
+    public int compareTo(Card otherCard) {
+        int rankComparison = this.rank.compareTo(otherCard.rank);
+        if (rankComparison != 0) {
+            return rankComparison;
+        } else {
+            return this.suit.compareTo(otherCard.suit);
+        }
     }
 
     public enum Rank{
@@ -11,7 +20,7 @@ public class Card {
     }
 
     public enum Suit {
-        HEARTS, SPADES, CLUBS, DIAMONDS
+        HEARTS, SPADES, CLUBS, DIAMONDS,
     }
 
     private final Rank rank;
