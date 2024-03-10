@@ -1,2 +1,4 @@
-package game;public class hand {
+package game;
+
+public class Hand {
 }

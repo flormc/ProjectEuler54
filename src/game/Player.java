@@ -1,2 +1,4 @@
-package game;public class player {
+package game;
+
+public class Player {
 }
