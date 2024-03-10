@@ -12,15 +12,32 @@ public class PokerGame{
         PokerFileReader fileReader = new PokerFileReader(filePath);
         List<String> lines = fileReader.readLines();
 
+        int player1Wins = 0;
+        int player2Wins = 0;
+
         for (String line : lines){
             String[] cardsArray = line.split(" ");
 
             Player player1 = createPlayer("Player 1", cardsArray, 0, 4);
             Player player2 = createPlayer("Player 2", cardsArray, 5, 9);
+
             System.out.println(player1);
             System.out.println(player2);
-            evaluateAndPrintWinner(player1, player2);
+
+            int result = evaluateAndPrintWinner(player1, player2);
+
+            if (result > 0){
+                System.out.println("\u001B[32m" + player1.getName() + " wins!\u001B[0m");
+                player1Wins++;
+            } else if (result < 0){
+                System.out.println("\u001B[34m" + player2.getName() + " wins!\u001B[0m");
+                player2Wins++;
+            } else {
+                System.out.println("It's a tie!");
+            }
+            System.out.println();
         }
+        System.out.println("\u001B[33m\u001B[1mTotal Player 1 wins: " + player1Wins + "\u001B[0m"); // Yellow color, bold
     }
     private static Player createPlayer(String name, String[] cardsArray, int start, int end){
             Hand hand = new Hand();
@@ -32,29 +49,40 @@ public class PokerGame{
             return new Player(name, hand);
     }
 
-    public static Card parseCardFromString(String cardString){
+    public static Card parseCardFromString(String cardString) {
         String rankString = cardString.substring(0, cardString.length() - 1);
         char suitChar = cardString.charAt(cardString.length() - 1);
-        String suitString = String.valueOf(suitChar);
 
         Card.Rank rank;
-        if (rankString.equals("T")) {
-            rank = Card.Rank.TEN;
-        } else if (rankString.equals("K")) {
-            rank = Card.Rank.KING;
-        } else if (rankString.equals("A")) {
-            rank = Card.Rank.ACE;
-        } else if (rankString.equals("J")) {
-            rank = Card.Rank.JACK;
-        } else if (rankString.equals("Q")) {
-            rank = Card.Rank.QUEEN;
-        } else if (rankString.equals("2") || rankString.equals("3") || rankString.equals("4") ||
-                rankString.equals("5") || rankString.equals("6") || rankString.equals("7") ||
-                rankString.equals("8") || rankString.equals("9")) {
-            rank = Card.Rank.values()[Integer.parseInt(rankString) - 2];
-        } else {
-            rank = Card.Rank.valueOf(rankString);
+        switch (rankString) {
+            case "T":
+                rank = Card.Rank.TEN;
+                break;
+            case "K":
+                rank = Card.Rank.KING;
+                break;
+            case "A":
+                rank = Card.Rank.ACE;
+                break;
+            case "J":
+                rank = Card.Rank.JACK;
+                break;
+            case "Q":
+                rank = Card.Rank.QUEEN;
+                break;
+            default:
+                try {
+                    int rankValue = Integer.parseInt(rankString);
+                    if (rankValue >= 2 && rankValue <= 9) {
+                        rank = Card.Rank.values()[rankValue - 2];
+                    } else {
+                        throw new IllegalArgumentException("Invalid rank: " + rankString);
+                    }
+                } catch (NumberFormatException ignored) {
+                    throw new IllegalArgumentException("Invalid rank: " + rankString);
+                }
         }
+
         Card.Suit suit;
         switch (suitChar) {
             case 'H':
@@ -76,17 +104,11 @@ public class PokerGame{
         return new Card(rank, suit);
     }
 
-    static void evaluateAndPrintWinner(Player player1, Player player2){
+    static int evaluateAndPrintWinner(Player player1, Player player2){
         Hand hand1 = player1.getHand();
         Hand hand2 = player2.getHand();
         int result = hand1.compareTo(hand2);
 
-        if (result > 0){
-            System.out.println(player1.getName() + "wins!");
-        } else if (result < 0){
-            System.out.println(player2.getName() + "wins!");
-        } else {
-            System.out.println("It's a tie!");
-        }
+        return result;
     }
 }
